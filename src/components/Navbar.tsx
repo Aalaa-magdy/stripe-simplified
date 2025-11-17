@@ -1,5 +1,7 @@
-import { BookOpenIcon, GraduationCap, ZapIcon } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, SignOutButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { BookOpenIcon, CreditCardIcon, GraduationCap, LogOutIcon, ZapIcon } from "lucide-react";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
   return (
@@ -20,6 +22,42 @@ export default function Navbar() {
                 <ZapIcon className="w-5 h-5"/>
                 <span className="hidden sm:inline">Pro</span>
              </Link>
+
+             <SignedIn>
+                 <Link href={"/billing"}>
+                  <Button variant={"outline"} size={"sm"} className='flex items-center gap-2'>
+                     <CreditCardIcon className="size-4"/>
+                     <span className="hidden sm:inline">Billing</span>
+                  </Button>
+                </Link>
+             </SignedIn>
+
+             <UserButton />
+
+             <SignedIn>
+                <SignOutButton>
+                   <Button variant="outline" size={"sm"} className='hidden sm:flex items-center gap-2'>
+                     <LogOutIcon className="size-4"/>
+                     <span>Log Out</span>
+                   </Button>
+                </SignOutButton>
+             </SignedIn>
+
+             <SignedOut>
+                <SignInButton mode="modal">
+                    <Button variant="outline" size={"sm"}>
+                      Log In
+                    </Button>
+                </SignInButton>
+             </SignedOut>
+
+             <SignedOut>
+                 <SignUpButton mode="modal">
+                    <Button size={"sm"}>
+                      Sign Up
+                    </Button>
+                 </SignUpButton>
+             </SignedOut>
         </div>
     </nav>
   );
