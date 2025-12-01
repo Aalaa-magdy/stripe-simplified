@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "courses:getCourses": {
+      "path": "courses.ts"
+    },
+    "courses:getCourseById": {
+      "path": "courses.ts"
+    }
+  }
+}

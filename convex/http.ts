@@ -3,6 +3,7 @@ import { httpAction } from "./_generated/server";
 import { Webhook } from "svix";
 import {WebhookEvent} from "@clerk/nextjs/server"
 import {api} from "./_generated/api"
+import stripe from "../src/lib/stripe"
 const http= httpRouter()
 const clerkWebhook = httpAction(async (ctx,request) => {
     const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
@@ -35,11 +36,24 @@ const clerkWebhook = httpAction(async (ctx,request) => {
      
      if(eventType === "user.created"){
       const {id,email_addresses,first_name,last_name} = evt.data;
-        const email = email_addresses.length > 0 ? email_addresses[0].email_address : "";
-        const name = `${first_name || ""} ${last_name || ""}`.trim();
+      const email = email_addresses.length > 0 ? email_addresses[0].email_address : "";
+      const name = `${first_name || ""} ${last_name || ""}`.trim();
 
         try{
-           await ctx.runMutation(api.users.createUser,{clerkId:id,email,name});
+           
+           const customer = await  stripe.customers.create({
+            email,
+            name,
+            metadata:{clerkId:id}
+           })
+           await ctx.runMutation(api.users.createUser,{
+            clerkId:id,
+            email,
+            name,
+            stripeCustomerId:customer.id});
+
+
+
         } catch(error){
               console.error("Error creating user in Convex:", error);
               return new Response("Error creating user", { status: 500 });

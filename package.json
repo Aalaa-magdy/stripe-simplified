@@ -19,6 +19,7 @@
     "next": "^16.0.3",
     "react": "^18",
     "react-dom": "^18",
+    "stripe": "^20.0.0",
     "svix": "^1.81.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7"
