@@ -3,8 +3,9 @@ import { AuthConfig } from "convex/server";
 export default {
   providers: [
     {
+     
       domain: "https://sunny-bulldog-76.clerk.accounts.dev",
       applicationID: "convex",
-    },
+    }
   ]
 } satisfies AuthConfig;

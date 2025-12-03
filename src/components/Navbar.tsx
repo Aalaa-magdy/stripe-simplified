@@ -1,3 +1,5 @@
+"use client";
+
 import { SignedIn, SignedOut, SignInButton, SignOutButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { BookOpenIcon, CreditCardIcon, GraduationCap, LogOutIcon, ZapIcon } from "lucide-react";
 import Link from "next/link";
@@ -5,7 +7,7 @@ import { Button } from "./ui/button";
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center py-4 px-6 bg-backgound border-b ">  
+    <nav className="flex justify-between items-center py-4 px-6 bg-backgound border-b ">
         <Link href="/" className="text-2xl font-extrabold text-primary flex items-center gap-2">
             MasterClass 
             <GraduationCap className="w-6 h-6 text-primary" />
