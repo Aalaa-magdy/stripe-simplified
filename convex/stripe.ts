@@ -2,7 +2,7 @@ import stripe from "../src/lib/stripe";
 import { api } from "./_generated/api";
 import { action } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
-
+import rateLimit from "../src/lib/rateLimit";
 export const createCheckoutSession = action({
     args:{ courseId: v.id("courses")},
     handler: async(ctx,args): Promise<{checkoutUrl: string | null}> => {
@@ -19,6 +19,12 @@ export const createCheckoutSession = action({
         }
 
         // todo: implement rate limittng
+        const rateLimitKey= `checkout-rate-limit:${user._id}`
+        const {success} = await rateLimit.limit(rateLimitKey)
+
+        if(!success){
+          throw new Error("Rate limit exceeded.");
+        }
         const course = await ctx.runQuery(api.courses.getCourseById, {courseId: args.courseId});
         if(!course){
             throw new ConvexError("Course not found");

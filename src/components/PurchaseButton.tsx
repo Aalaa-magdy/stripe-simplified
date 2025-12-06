@@ -7,6 +7,7 @@ import { api } from "../../convex/_generated/api";
 import { Button } from "./ui/button";
 import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 const PurchaseButton = ({courseId}:{courseId: Id<"courses">}) => {
   const {user} = useUser()
   const [isLoading, setIsLoading] = useState(false)
@@ -29,7 +30,12 @@ const PurchaseButton = ({courseId}:{courseId: Id<"courses">}) => {
       }
       catch(error :any){
         //todo: handle error
-        console.error("Error purchasing course:", error)
+        if(error.message.includes("Rate limit exceeded.")){
+            toast.error("Rate limit exceeded. Please try again later.")
+        }
+        else{
+          toast.error(error.message || "Failed to purchase course. Please try again.")
+        }
 
       }finally{
         setIsLoading(false)
